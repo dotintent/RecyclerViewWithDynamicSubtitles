@@ -61,5 +61,7 @@ public class MainActivity extends AppCompatActivity implements MyDynamicTitlesAd
         refreshAdapter();
     }
 
-    private void refreshAdapter() {myDynamicTitlesAdapter.setData(books, sectionEvaluator);}
+    private void refreshAdapter() {
+        myDynamicTitlesAdapter.setData(books, sectionEvaluator);
+    }
 }

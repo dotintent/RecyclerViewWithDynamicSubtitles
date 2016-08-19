@@ -21,4 +21,9 @@ android {
 dependencies {
     compile androidReyclerView
     compile androidSupport
+
+    testCompile assertJ
+    testCompile junit
+    testCompile mockito
+    testCompile robolectric
 }
