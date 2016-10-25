@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ComparatorsTest {
+public class SectionComparatorsTest {
 
     private static final Section<String> lowest = new Section<>("item", "aTitle");
     private static final Section<String> medium = new Section<>("item", "bTitle");
@@ -25,7 +25,7 @@ public class ComparatorsTest {
     @Test
     public void ascedingComparatorShouldCompareSectionsAscedning() {
         // when
-        Collections.sort(listOfSections, Comparators.ASCENDING_COMPARATOR);
+        Collections.sort(listOfSections, SectionComparators.ASCENDING_COMPARATOR);
 
         // then
         assertThat(listOfSections.get(0)).isEqualTo(lowest);
@@ -36,7 +36,7 @@ public class ComparatorsTest {
     @Test
     public void descedingComparatorShouldCompareSectionsDescending() {
         // when
-        Collections.sort(listOfSections, Comparators.DESCENDING_COMPARATOR);
+        Collections.sort(listOfSections, SectionComparators.DESCENDING_COMPARATOR);
 
         // then
         assertThat(listOfSections.get(0)).isEqualTo(highest);

@@ -57,16 +57,17 @@ public abstract class DynamicRecyclerViewAdapter
     public final int getItemCount() {
         return sectionedItemList.size();
     }
-
+    
     public final void setData(@Nullable Collection<DataObject> items,
                               @NonNull SectionEvaluator<DataObject> sectionEvaluator) {
-        setData(items, sectionEvaluator, Comparators.ASCENDING_COMPARATOR);
+        setData(items, sectionEvaluator, SectionComparators.ASCENDING_COMPARATOR, new EmptyItemComparator<DataObject>());
     }
 
     public final void setData(@Nullable Collection<DataObject> items,
                               @NonNull SectionEvaluator<DataObject> sectionEvaluator,
-                              @NonNull Comparator<Section> comparator) {
-        final SectionedItems<DataObject> sectionedItems = new SectionedItems<>(sectionEvaluator, items, comparator);
+                              @NonNull Comparator<Section> sectionComparator,
+                              @NonNull Comparator<DataObject> dataObjectComparator) {
+        final SectionedItems<DataObject> sectionedItems = new SectionedItems<>(sectionEvaluator, items, sectionComparator, dataObjectComparator);
         mapOfSections = sectionedItems.getSections();
         insertNewItems(sectionedItems);
     }

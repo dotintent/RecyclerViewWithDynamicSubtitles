@@ -1,5 +1,5 @@
 package com.infullmobile.android.recyclerviewwithdynamicsubtitles;
 
-public interface ListItem {
+interface ListItem {
     boolean isHeader();
 }

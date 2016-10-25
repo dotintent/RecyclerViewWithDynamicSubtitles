@@ -12,24 +12,27 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class SectionedItems<T> {
+class SectionedItems<T> {
 
     private final SectionEvaluator<T> sectionEvaluator;
     private List<Section<T>> listOfOrderedSections = Collections.emptyList();
 
     SectionedItems(@NonNull SectionEvaluator<T> sectionEvaluator,
                    @Nullable Collection<T> items,
-                   @NonNull Comparator<Section> comparator) {
+                   @NonNull Comparator<Section> sectionComparator,
+                   @NonNull Comparator<T> dataObjectComparator) {
         this.sectionEvaluator = sectionEvaluator;
-        setData(items, comparator);
+        setData(items, sectionComparator, dataObjectComparator);
     }
 
-    private void setData(@Nullable Collection<T> items, @NonNull Comparator<Section> comparator) {
+    private void setData(@Nullable Collection<T> items,
+                         @NonNull Comparator<Section> sectionComparator,
+                         @NonNull Comparator<T> dataObjectComparator) {
         listOfOrderedSections.clear();
-        listOfOrderedSections = itemsToSections(items, comparator);
+        listOfOrderedSections = itemsToSections(items, sectionComparator, dataObjectComparator);
     }
 
-    public List<ListItem> getItems() {
+    List<ListItem> getItems() {
         final List<ListItem> result = new ArrayList<>();
         for (Section<T> section : listOfOrderedSections) {
             result.addAll(section.getListItems());
@@ -37,7 +40,7 @@ public class SectionedItems<T> {
         return result;
     }
 
-    public Map<String, Section<T>> getSections() {
+    Map<String, Section<T>> getSections() {
         final Map<String, Section<T>> mapOfSections = new HashMap<>();
         for (Section<T> section : listOfOrderedSections) {
             mapOfSections.put(section.getTitle(), section);
@@ -46,18 +49,28 @@ public class SectionedItems<T> {
     }
 
     @NonNull
+    private List<Section<T>> itemsToSections(@Nullable Collection<T> items,
+                                             @NonNull Comparator<Section> sectionComparator,
+                                             @NonNull Comparator<T> dataObjectComparator) {
+        return (items != null)
+                ? sortSections(getSectionsOfItems(sortItems(items, dataObjectComparator)), sectionComparator)
+                : Collections.<Section<T>>emptyList();
+    }
+
+    @NonNull
+    private List<T> sortItems(@NonNull Collection<T> items,
+                              @NonNull Comparator<T> comparator) {
+        final List<T> listOfItems = new LinkedList<>(items);
+        Collections.sort(listOfItems, comparator);
+        return listOfItems;
+    }
+
+    @NonNull
     private List<Section<T>> sortSections(@NonNull Collection<Section<T>> sectionedItems,
                                           @NonNull Comparator<Section> comparator) {
         final List<Section<T>> listOfSections = new LinkedList<>(sectionedItems);
         Collections.sort(listOfSections, comparator);
         return listOfSections;
-    }
-
-    @NonNull
-    private List<Section<T>> itemsToSections(@Nullable Collection<T> items,
-                                             @NonNull Comparator<Section> comparator) {
-        return (items != null) ? sortSections(getSectionsOfItems(items), comparator)
-                                 : Collections.<Section<T>>emptyList();
     }
 
     @NonNull
