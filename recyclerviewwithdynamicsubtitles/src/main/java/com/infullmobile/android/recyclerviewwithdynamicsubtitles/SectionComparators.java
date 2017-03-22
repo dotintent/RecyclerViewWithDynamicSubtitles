@@ -2,9 +2,9 @@ package com.infullmobile.android.recyclerviewwithdynamicsubtitles;
 
 import java.util.Comparator;
 
-public final class Comparators {
+public final class SectionComparators {
 
-    private Comparators() {
+    private SectionComparators() {
         throw new AssertionError("No instances.");
     }
 

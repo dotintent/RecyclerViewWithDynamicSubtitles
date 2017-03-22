@@ -8,17 +8,17 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class Section<T> {
+class Section<T> {
 
     private final List<ListItem> items;
     private final List<T> dataItems;
     private final String title;
 
-    public Section(@NonNull T firstItem, @NonNull String title) {
+    Section(@NonNull T firstItem, @NonNull String title) {
         this(Arrays.asList(firstItem), title);
     }
 
-    public Section(@NonNull List<T> items, @NonNull String title) {
+    Section(@NonNull List<T> items, @NonNull String title) {
         this.title = title;
         dataItems = new ArrayList<>(items);
         this.items = createListItems(title, items);
@@ -33,22 +33,22 @@ public class Section<T> {
         return listItems;
     }
 
-    public void addNewItem(@Nullable T item) {
+    void addNewItem(@Nullable T item) {
         if (item != null) {
             dataItems.add(item);
             items.add(new DataCellItem<>(item));
         }
     }
 
-    public String getTitle() {
+    String getTitle() {
         return title;
     }
 
-    public Collection<ListItem> getListItems() {
+    Collection<ListItem> getListItems() {
         return items;
     }
 
-    public Collection<T> getDataItems() {
+    Collection<T> getDataItems() {
         return dataItems;
     }
 }

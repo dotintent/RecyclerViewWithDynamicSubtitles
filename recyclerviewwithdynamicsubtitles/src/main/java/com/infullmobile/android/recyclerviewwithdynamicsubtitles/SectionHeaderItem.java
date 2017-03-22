@@ -1,6 +1,6 @@
 package com.infullmobile.android.recyclerviewwithdynamicsubtitles;
 
-public class SectionHeaderItem implements ListItem {
+class SectionHeaderItem implements ListItem {
 
     private final String sectionName;
 
@@ -8,7 +8,7 @@ public class SectionHeaderItem implements ListItem {
         this.sectionName = sectionName;
     }
 
-    public String getSectionName() {
+    String getSectionName() {
         return sectionName;
     }
 

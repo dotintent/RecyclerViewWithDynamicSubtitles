@@ -1,6 +1,6 @@
 package com.infullmobile.android.recyclerviewwithdynamicsubtitles;
 
-public class DataCellItem<T> implements ListItem {
+class DataCellItem<T> implements ListItem {
 
     private T data;
 

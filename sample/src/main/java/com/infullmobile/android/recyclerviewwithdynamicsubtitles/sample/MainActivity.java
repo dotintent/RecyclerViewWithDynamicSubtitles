@@ -1,15 +1,17 @@
 package com.infullmobile.android.recyclerviewwithdynamicsubtitles.sample;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.infullmobile.android.recyclerviewwithdynamicsubtitles.SectionComparators;
 import com.infullmobile.android.recyclerviewwithdynamicsubtitles.SectionEvaluator;
 import com.infullmobile.android.recyclerviewwithdynamicsubtitles.sample.model.Book;
 import com.infullmobile.android.recyclerviewwithdynamicsubtitles.sample.model.BookFactory;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MyDynamicTitlesAdapter.ItemEraseListener {
@@ -22,6 +24,12 @@ public class MainActivity extends AppCompatActivity implements MyDynamicTitlesAd
         @Override
         public String evaluate(Book book) {
             return book.getGenre();
+        }
+    };
+    private Comparator<Book> itemsComparator = new Comparator<Book>() {
+        @Override
+        public int compare(Book lhs, Book rhs) {
+            return lhs.getTitle().compareTo(rhs.getTitle());
         }
     };
 
@@ -62,6 +70,6 @@ public class MainActivity extends AppCompatActivity implements MyDynamicTitlesAd
     }
 
     private void refreshAdapter() {
-        myDynamicTitlesAdapter.setData(books, sectionEvaluator);
+        myDynamicTitlesAdapter.setData(books, sectionEvaluator, SectionComparators.ASCENDING_COMPARATOR, itemsComparator);
     }
 }

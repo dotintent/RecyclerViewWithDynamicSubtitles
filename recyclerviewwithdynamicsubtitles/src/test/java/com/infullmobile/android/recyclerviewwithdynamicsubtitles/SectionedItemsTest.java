@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +18,15 @@ public class SectionedItemsTest {
     private static final String FIRST_ITEM = "firstItem";
     private final static String SECOND_ITEM = "secondItem";
     private final static String SECOND_SECOND_ITEM = "secondsecondItem";
+    private static final String FIRST_IN_ALPHABETICAL_ORDER_ITEM = "A";
+    private static final String SECOND_IN_ALPHABETICAL_ORDER_ITEM = "B";
+    private static final String THIRD_IN_ALPHABETICAL_ORDER_ITEM = "C";
     private final static int TWO_HEADER_AND_THREE_ITEMS = 5;
 
     List<String> testItems = Arrays.asList(FIRST_ITEM, SECOND_ITEM, SECOND_SECOND_ITEM);
+    List<String> mixedUpTestItems = Arrays.asList(THIRD_IN_ALPHABETICAL_ORDER_ITEM,
+                                                  FIRST_IN_ALPHABETICAL_ORDER_ITEM,
+                                                  SECOND_IN_ALPHABETICAL_ORDER_ITEM);
 
     @Test
     public void shouldCreateCorrectSectionedItemsWithTwoSections() {
@@ -27,7 +34,8 @@ public class SectionedItemsTest {
         sectionedItems = new SectionedItems<>(
                 new FirstLetterSectionEvaluator(),
                 testItems,
-                Comparators.ASCENDING_COMPARATOR);
+                SectionComparators.ASCENDING_COMPARATOR,
+                new EmptyItemComparator<String>());
 
         // when
         List<ListItem> listItems = sectionedItems.getItems();
@@ -53,7 +61,8 @@ public class SectionedItemsTest {
         sectionedItems = new SectionedItems<>(
                 new FirstLetterSectionEvaluator(),
                 null,
-                Comparators.ASCENDING_COMPARATOR);
+                SectionComparators.ASCENDING_COMPARATOR,
+                new EmptyItemComparator<String>());
 
         // when
         List<ListItem> listItems = sectionedItems.getItems();
@@ -70,7 +79,8 @@ public class SectionedItemsTest {
         sectionedItems = new SectionedItems<>(
                 new FirstLetterSectionEvaluator(),
                 Collections.<String>emptyList(),
-                Comparators.ASCENDING_COMPARATOR);
+                SectionComparators.ASCENDING_COMPARATOR,
+                new EmptyItemComparator<String>());
 
         // when
         List<ListItem> listItems = sectionedItems.getItems();
@@ -78,8 +88,25 @@ public class SectionedItemsTest {
 
         // then
         assertThat(listItems).isEmpty();
-
         assertThat(mapOfSections).isEmpty();
+    }
+
+    @Test
+    public void shouldReturnItemsInAlphabeticalOrder() {
+        // given
+        sectionedItems = new SectionedItems<>(
+                new FirstLetterSectionEvaluator(),
+                mixedUpTestItems,
+                SectionComparators.ASCENDING_COMPARATOR,
+                new AlphabeticalOrderItemComparator());
+
+        // when
+        List<ListItem> orderedItems = sectionedItems.getItems();
+
+        // then
+        assertThat(((SectionHeaderItem) orderedItems.get(0)).getSectionName()).isEqualTo(FIRST_IN_ALPHABETICAL_ORDER_ITEM);
+        assertThat(((SectionHeaderItem) orderedItems.get(2)).getSectionName()).isEqualTo(SECOND_IN_ALPHABETICAL_ORDER_ITEM);
+        assertThat(((SectionHeaderItem) orderedItems.get(4)).getSectionName()).isEqualTo(THIRD_IN_ALPHABETICAL_ORDER_ITEM);
     }
 
     private static class FirstLetterSectionEvaluator implements SectionEvaluator<String> {
@@ -89,6 +116,13 @@ public class SectionedItemsTest {
             return string != null && string.length() > 0
                    ? string.substring(0, 1)
                    : "/empty";
+        }
+    }
+
+    private static class AlphabeticalOrderItemComparator implements Comparator<String> {
+        @Override
+        public int compare(String lhs, String rhs) {
+            return lhs.compareTo(rhs);
         }
     }
 }
