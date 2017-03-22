@@ -26,11 +26,12 @@ public abstract class DynamicRecyclerViewAdapter
 
     public abstract TitleViewHolder onCreateTitleViewHolder(@NonNull ViewGroup parent);
 
-    public abstract void onBindViewHolder(@NonNull ViewHolder holder, @NonNull DataObject item);
+    public abstract void onBindViewHolder(@NonNull ViewHolder holder, @NonNull DataObject item, int position);
 
     public abstract void onBindTitleViewHolder(@NonNull TitleViewHolder holder,
                                                @NonNull String sectionName,
-                                               @NonNull Collection<DataObject> dataItems);
+                                               @NonNull Collection<DataObject> dataItems,
+                                               int position);
 
     @Override
     public final RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,9 +43,12 @@ public abstract class DynamicRecyclerViewAdapter
         final ListItem item = sectionedItemList.get(position);
         if (item.isHeader()) {
             final String sectionName = ((SectionHeaderItem) item).getSectionName();
-            onBindTitleViewHolder((TitleViewHolder) holder, sectionName, mapOfSections.get(sectionName).getDataItems());
+            onBindTitleViewHolder((TitleViewHolder) holder,
+                                  sectionName,
+                                  mapOfSections.get(sectionName).getDataItems(),
+                                  position);
         } else {
-            onBindViewHolder((ViewHolder) holder, ((DataCellItem<DataObject>) item).getData());
+            onBindViewHolder((ViewHolder) holder, ((DataCellItem<DataObject>) item).getData(), position);
         }
     }
 

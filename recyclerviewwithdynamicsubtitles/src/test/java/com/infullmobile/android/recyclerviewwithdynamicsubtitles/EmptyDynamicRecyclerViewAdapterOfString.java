@@ -21,14 +21,16 @@ public class EmptyDynamicRecyclerViewAdapterOfString
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder,
-                                 @NonNull String item) {
+                                 @NonNull String item,
+                                 int position) {
         // NO OP
     }
 
     @Override
     public void onBindTitleViewHolder(@NonNull RecyclerView.ViewHolder holder,
                                       @NonNull String sectionName,
-                                      @NonNull Collection dataItems) {
+                                      @NonNull Collection dataItems,
+                                      int position) {
         // NO OP
     }
 }

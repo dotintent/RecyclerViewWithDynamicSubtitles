@@ -38,6 +38,7 @@ public class DynamicRecyclerViewAdapterTest {
     @Captor ArgumentCaptor<String> titleCaptor;
     @Captor ArgumentCaptor<Collection<DataCellItem>> dataItemsCaptor;
     @Captor ArgumentCaptor<String> dataItemCaptor;
+    @Captor ArgumentCaptor<Integer> positionCaptor;
 
     @Before
     public void setUp() {
@@ -83,60 +84,78 @@ public class DynamicRecyclerViewAdapterTest {
     public void shouldDelegateBindFirstTitleViewHolder() {
         // given
         RecyclerView.ViewHolder viewHolder = mock(RecyclerView.ViewHolder.class);
+        final int position = 0;
 
         // when
-        dynamicRecyclerViewAdapter.onBindViewHolder(viewHolder, 0);
+        dynamicRecyclerViewAdapter.onBindViewHolder(viewHolder, position);
 
         // then
         verify(dynamicRecyclerViewAdapter)
-                .onBindTitleViewHolder(isA(RecyclerView.ViewHolder.class), titleCaptor.capture(), dataItemsCaptor.capture());
+                .onBindTitleViewHolder(isA(RecyclerView.ViewHolder.class),
+                                       titleCaptor.capture(),
+                                       dataItemsCaptor.capture(),
+                                       positionCaptor.capture());
         assertThat(titleCaptor.getValue()).isEqualTo(FIRST_ITEM_SECTION_TITLE);
         assertThat(dataItemsCaptor.getValue().toArray()[0]).isEqualTo(FIRST_ITEM);
         assertThat(dataItemsCaptor.getValue().size()).isEqualTo(1);
+        assertThat(positionCaptor.getValue()).isEqualTo(position);
     }
 
     @Test
     public void shouldDelegateBindFirstItemViewHolder() {
         // given
         RecyclerView.ViewHolder viewHolder = mock(RecyclerView.ViewHolder.class);
+        final int position = 1;
 
         // when
-        dynamicRecyclerViewAdapter.onBindViewHolder(viewHolder, 1);
+        dynamicRecyclerViewAdapter.onBindViewHolder(viewHolder, position);
 
         // then
         verify(dynamicRecyclerViewAdapter)
-                .onBindViewHolder(isA(RecyclerView.ViewHolder.class), dataItemCaptor.capture());
+                .onBindViewHolder(isA(RecyclerView.ViewHolder.class),
+                                  dataItemCaptor.capture(),
+                                  positionCaptor.capture());
         assertThat(dataItemCaptor.getValue()).isEqualTo(FIRST_ITEM);
+        assertThat(positionCaptor.getValue()).isEqualTo(position);
     }
 
     @Test
     public void shouldDelegateBindSecondTitleViewHolder() {
         // given
         RecyclerView.ViewHolder viewHolder = mock(RecyclerView.ViewHolder.class);
+        final int position = 2;
 
         // when
-        dynamicRecyclerViewAdapter.onBindViewHolder(viewHolder, 2);
+        dynamicRecyclerViewAdapter.onBindViewHolder(viewHolder, position);
 
         // then
         verify(dynamicRecyclerViewAdapter)
-                .onBindTitleViewHolder(isA(RecyclerView.ViewHolder.class), titleCaptor.capture(), dataItemsCaptor.capture());
+                .onBindTitleViewHolder(isA(RecyclerView.ViewHolder.class),
+                                       titleCaptor.capture(),
+                                       dataItemsCaptor.capture(),
+                                       positionCaptor.capture());
         assertThat(titleCaptor.getValue()).isEqualTo(SECOND_ITEM_SECTION_TITLE);
         assertThat(dataItemsCaptor.getValue().toArray()[0]).isEqualTo(SECOND_ITEM);
         assertThat(dataItemsCaptor.getValue().size()).isEqualTo(1);
+        assertThat(positionCaptor.getValue()).isEqualTo(position);
     }
 
     @Test
     public void shouldDelegateBindSecondItemViewHolder() {
         // given
         RecyclerView.ViewHolder viewHolder = mock(RecyclerView.ViewHolder.class);
+        final int position = 3;
 
         // when
-        dynamicRecyclerViewAdapter.onBindViewHolder(viewHolder, 3);
+        dynamicRecyclerViewAdapter.onBindViewHolder(viewHolder, position);
 
         // then
         verify(dynamicRecyclerViewAdapter)
-                .onBindViewHolder(isA(RecyclerView.ViewHolder.class), dataItemCaptor.capture());
+                .onBindViewHolder(isA(RecyclerView.ViewHolder.class),
+                                  dataItemCaptor.capture(),
+                                  positionCaptor.capture());
         assertThat(dataItemCaptor.getValue()).isEqualTo(SECOND_ITEM);
+        assertThat(positionCaptor.getValue()).isEqualTo(position);
     }
 
     private static final class TestSectionEvaluator implements SectionEvaluator<String> {
