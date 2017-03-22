@@ -34,19 +34,20 @@ public class MyDynamicTitlesAdapter
 
     @Override
     public void onBindViewHolder(@NonNull BookListItemViewHolder holder,
-                                 @NonNull Book book) {
+                                 @NonNull Book book,
+                                 int position) {
         holder.bind(book, listener);
-
     }
 
     @Override
     public void onBindTitleViewHolder(@NonNull BookGenreSubtitleViewHolder holder,
                                       @NonNull String sectionName,
-                                      @NonNull Collection<Book> dataItems) {
+                                      @NonNull Collection<Book> dataItems,
+                                      int position) {
         holder.bind(sectionName, dataItems.size());
     }
 
-    public static interface ItemEraseListener {
+    interface ItemEraseListener {
         void eraseItem(Book book);
     }
 }
