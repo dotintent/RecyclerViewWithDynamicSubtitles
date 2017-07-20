@@ -33,7 +33,10 @@ public class DynamicRecyclerViewAdapterTest {
     private static final String FIRST_ITEM_SECTION_TITLE = new TestSectionEvaluator().evaluate(FIRST_ITEM);
     private final static String SECOND_ITEM = "secondItem";
     private static final String SECOND_ITEM_SECTION_TITLE = new TestSectionEvaluator().evaluate(SECOND_ITEM);
+    private final static String THIRD_ITEM = "thirdItem";
+    private final static String FOURTH_ITEM = "fourthItem";
     private List<String> testItems = Arrays.asList(FIRST_ITEM, SECOND_ITEM);
+    private List<String> moreTestItems = Arrays.asList(THIRD_ITEM, FOURTH_ITEM);
 
     @Captor ArgumentCaptor<String> titleCaptor;
     @Captor ArgumentCaptor<Collection<DataCellItem>> dataItemsCaptor;
@@ -50,6 +53,13 @@ public class DynamicRecyclerViewAdapterTest {
     @Test
     public void shouldGetCorrectItemCount() {
         assertThat(dynamicRecyclerViewAdapter.getItemCount()).isEqualTo(4);
+    }
+
+    @Test
+    public void shouldGetCorrectItemCountAfterAdding() {
+        // when
+        dynamicRecyclerViewAdapter.addData(moreTestItems, new TestSectionEvaluator());
+        assertThat(dynamicRecyclerViewAdapter.getItemCount()).isEqualTo(7);
     }
 
     @Test
