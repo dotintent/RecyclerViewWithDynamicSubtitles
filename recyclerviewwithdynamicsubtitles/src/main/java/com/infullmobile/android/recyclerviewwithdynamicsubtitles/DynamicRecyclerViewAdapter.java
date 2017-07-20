@@ -72,11 +72,25 @@ public abstract class DynamicRecyclerViewAdapter
                               @NonNull Comparator<Section> comparator) {
         final SectionedItems<DataObject> sectionedItems = new SectionedItems<>(sectionEvaluator, items, comparator);
         mapOfSections = sectionedItems.getSections();
-        insertNewItems(sectionedItems);
+        insertNewItems(sectionedItems.getItems());
     }
 
-    private void insertNewItems(SectionedItems<DataObject> sectionedItems) {
+    public final void addData(@Nullable Collection<DataObject> items,
+                              @NonNull SectionEvaluator<DataObject> sectionEvaluator) {
+        addData(items, sectionEvaluator, Comparators.ASCENDING_COMPARATOR);
+    }
+
+    public final void addData(@Nullable Collection<DataObject> items,
+                              @NonNull SectionEvaluator<DataObject> sectionEvaluator,
+                              @NonNull Comparator<Section> comparator) {
+        final SectionedItems<DataObject> sectionedItems = new SectionedItems<>(sectionEvaluator, items, comparator);
+        mapOfSections = sectionedItems.getSections();
         final List<ListItem> newListItems = sectionedItems.getItems();
+        newListItems.addAll(sectionedItemList);
+        insertNewItems(newListItems);
+    }
+
+    private void insertNewItems(List<ListItem> newListItems) {
         if (sectionedItemList.isEmpty()) {
             sectionedItemList = newListItems;
             notifyDataSetChanged();
